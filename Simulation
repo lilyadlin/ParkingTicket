@@ -1,0 +1,318 @@
+/**
+ The ParkedCar class is responsible for  the details of  
+ the parked  car itself.
+ */
+public class ParkedCar {
+
+    private String make;        //the make of the parked car
+    private String model;       //the model of the parked car
+    private String color;       //the color of the parked car
+    private String license;     //the license number of the parked car
+    private int timepark;    //the time the car has been parked
+    
+    /** 
+    The no-arg constructor initializes empty object.
+     */
+    
+    public ParkedCar()
+        {
+        make = " ";
+        model = " ";
+        color = " ";
+        license = " ";
+        timepark = 0;
+        }
+    /**
+     The parameterized constructor accepts arguments.
+        @param myMake car's make.
+        @param myModel car's model.
+        @param myColor car's color.
+        @param myLicense car's license.
+        @param myTimepark the time that the car has been parked.
+     */
+    
+    public ParkedCar(String myMake, String myModel, String myColor,
+            String myLicense, int myTimepark)
+        {
+        make = myMake;
+        model = myModel;
+        color = myColor;
+        license = myLicense;
+        timepark = myTimepark;
+        }
+    /**
+     The setMake method assigns a make.
+        @param myMake the car's make.
+     */
+    public void setMake(String myMake)
+    {
+        make = myMake;
+    }
+    /**
+     The setModel method assigns a model.
+        @param myModel the car's model.
+     */
+    public void setModel(String myModel)
+    {
+        model = myModel;
+    }
+    /**
+     The setColor method assigns a color.
+        @param myColor the car's color.
+     */
+    public void setColor(String myColor)
+    {
+        color = myColor;
+    }
+    /**
+     The setLicense method assigns a license.
+        @param myLicense the car's license.
+     */
+    public void setLicense(String myLicense)
+    {
+        license = myLicense;
+    }
+    /**
+     The setTimepark method assigns the amount of time parked.
+        @param myTimepark the car's time parked.
+     */
+    public void setTimepark(int myTimepark)
+    {
+        timepark = myTimepark;
+    }
+    
+    //Get methods will return
+    public String getMake()
+    {
+        return make;
+    }
+    public String getModel()
+    {
+        return model;
+    }
+    public String getColor()
+    {
+        return color;
+    }
+    public String getLicense()
+    {
+        return license;
+    }
+    public int getTime()
+    {
+        return timepark;
+    }
+    //Convert to  String output
+    public String toString() 
+        {
+
+            String car = "Make: " + make
+                + "\nModel: " + model
+                + "\nColor: " + color
+                + "\nLicense Plate: " + license;
+            return car;
+        }
+
+}
+/**
+The ParkingMeter class is in charge of the purchased parking time.
+ */
+public class ParkingMeter {
+    private int purchasetime;    //parking time that has been purchased
+    
+    /** 
+    The no-arg constructor initializes empty object.
+     */
+    public ParkingMeter()
+    {
+        purchasetime = 0;
+    }
+    
+    /**
+     The parameterized constructor accepts arguments.
+        @param myPurchasetime parking time that has been purchased.
+    */
+    public ParkingMeter(int myPurchasetime)
+    {
+        purchasetime = myPurchasetime;
+    }
+    /**
+     The setPurchasetime method assigns the purchased parking time.
+        @param myPurchasetime the purchased parking time.
+     */
+    public void setPurchasetime(int myPurchasetime)
+    {
+        purchasetime = myPurchasetime;
+    }
+    //Get method returns
+    public int getPurchase()
+    {
+        return purchasetime;
+    }
+}
+    
+    /**
+The ParkingTicket class is responsible for returning the parked car
+details, calculating and returning the fine, and returning the officer details.
+ */
+public class ParkingTicket {
+    double baseFine = 25.0;          //the initial fine
+    double hourFine = 10.0;          //the hourly fine
+    private double fine;             //the total fine
+    private ParkedCar car;           //the parked car details
+    private ParkingMeter meter;      //the purchased time
+    private PoliceOfficer officer;   //the officer issuing the ticket
+   
+    /**
+    The no-arg constructor
+     */
+    public ParkingTicket()
+    {
+        car = new ParkedCar();
+        officer = new PoliceOfficer();
+        meter = new ParkingMeter(); 
+    }
+    
+    /** 
+    The parameterized constructor
+    @param car the parked car
+    @param officer the officer
+    @param time the illegal time parked
+     */
+    public ParkingTicket(ParkedCar car, PoliceOfficer officer,
+            ParkingMeter meter)
+    {
+        this.car = car;
+        this.officer = officer;
+        this.meter = meter;
+        
+        calculateFine();
+    }
+    
+    //Calculate the fine
+    public double calculateFine()
+    {
+       double time = car.getTime() - meter.getPurchase();
+       double hours = time / 60;
+       
+       if(time <= 60)
+       {
+           fine = baseFine;
+       }
+       else if (time > 60)
+       {
+           fine = baseFine + (hours * hourFine);
+       }
+       fine = (double) Math.round(fine* 100) / 100;
+       return fine;
+    }
+    
+    //Convert to String output
+    public String toString()
+    {
+        String TicketString = "Fine: " + this.fine
+                + "\n" + car.toString() + "\n" + officer.toString();
+        
+        return TicketString;
+    }
+    
+}
+
+public class PoliceOfficer {
+    private String officer;          //the officer's name
+    private String badge;            //the officer's badge number
+    private ParkingMeter meter;      //parking ticket
+    private ParkedCar time;           //the time the car is parked
+    public ParkingTicket ticket;     //the parking ticket
+    
+    /**
+    The no-arg constructor initializes empty objects.
+    */
+    public PoliceOfficer()
+    {
+        officer  = " ";
+        badge = " ";
+        time = new ParkedCar();
+        meter = new ParkingMeter();
+        ticket = new ParkingTicket();
+    }
+    
+    /**
+    The parameterized constructor accepts arguments.
+    @param myOfficer the officer's name
+    @param myBadge the officer's badge
+    */
+    public PoliceOfficer(String myOfficer, String myBadge)
+    {
+        officer = myOfficer;
+        badge =  myBadge;
+    }
+    
+    //Set methods
+    public void setOfficer(String myOfficer)
+    {
+        officer = myOfficer;
+    }
+    public void setBadge(String myBadge)
+    {
+        badge = myBadge;
+    }
+    
+    //Get methods
+    public String getOfficer(String myOfficer)
+    {
+        return officer;
+    }
+    public String getBadge(String myBadge)
+    {
+        return badge;
+    }
+    
+    //Determine if car's time has expired
+    public ParkingTicket officer(ParkedCar car, ParkingMeter meter)
+    {
+        int illegal = car.getTime() - meter.getPurchase();
+        
+        if(illegal > 0)
+        {
+            ticket = new ParkingTicket(car, this, meter);
+        }
+        else
+        {
+           ticket =  null; 
+        }
+        return ticket;
+    }
+    //Convert to String output
+     public String toString() 
+    {
+        String OfficerString = "Police Officer : " + this.officer
+                        + "\nBadge: " + this.badge;
+        return OfficerString;
+
+    }
+}
+
+public class ParkingTicketSimulator {
+    public static void main(String[] args)
+    {
+        //FIRST DEMO
+        //A red car was parked for 30 minutes
+        ParkedCar car = new ParkedCar("BMW", "2008", "red", "178B36F", 120);
+        //The meter shows only 40 minutes purchased
+        ParkingMeter meter = new ParkingMeter(40);
+        //Officer Wilson sees this
+        PoliceOfficer officer = new PoliceOfficer("Wilson", "12345");
+        //Issue a parking ticket
+        ParkingTicket ticket = officer.officer(car,meter);
+       if (ticket != null)
+       {
+           System.out.println(ticket.toString());
+       }
+       else
+       {
+           System.out.println("No ticket");
+       }
+       
+    }
+}
